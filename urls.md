@@ -1,5 +1,7 @@
 # 四川大学教务处一些常用页面url
 
+[toc]
+
 ## 登录
 ```
 'http://202.115.47.141/loginAction.do?zjh='.$uid.'&mm='.$password
@@ -20,4 +22,11 @@ http://202.115.47.141/gradeLnAllAction.do?type=ln&oper=bjg
 ### 本学期成绩
 ```
 http://202.115.47.141/bxqcjcxAction.do
+```
+
+## 课程表
+
+### 本学期课表
+```
+http://202.115.47.141/xkAction.do?actionType=6
 ```
