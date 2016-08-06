@@ -107,10 +107,9 @@ abstract class JwcBase{
 
         $this->_curl->get($url);
         if ( $this->_curl->error) {
-            echo 234;
             throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage);
         }
-        echo $page=$this->_curl->response;
+        $page=$this->_curl->response;
         //转码
         $page=iconv('GBK','UTF-8//IGNORE',$page);
         return $page;
