@@ -30,3 +30,10 @@ http://202.115.47.141/bxqcjcxAction.do
 ```
 http://202.115.47.141/xkAction.do?actionType=6
 ```
+
+## 个人信息
+
+### 学籍信息
+```
+http://202.115.47.141/xjInfoAction.do?oper=xjxx
+```

@@ -12,7 +12,11 @@ require_once "function.php";
 
 class Schedule extends JwcBase{
 
-
+    /**
+     * 获取本学期课表
+     * @author mohuishou<1@lailin.xyz>
+     * @return mixed
+     */
     protected function spider()
     {
         $url = 'http://202.115.47.141/xkAction.do?actionType=6';
