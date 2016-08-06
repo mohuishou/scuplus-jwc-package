@@ -66,3 +66,16 @@ function cbWeek($str)
 
     return $data;
 }
+
+/**
+ * 课程教师回调，针对有多个教师的情况
+ * @author mohuishou<1@lailin.xyz>
+ * @param $str
+ * @return mixed
+ */
+function cbTeacher($str){
+    $str=str_replace("*",'',$str);
+    $str=str_replace(" ",',',$str);
+    $str=removeSpace($str);
+    return $str;
+}

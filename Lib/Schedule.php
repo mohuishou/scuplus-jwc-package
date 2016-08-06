@@ -29,7 +29,7 @@ class Schedule extends JwcBase{
             'credit' => ['td:eq(4)', 'text'],//学分
             'courseType' => ['td:eq(5)', 'text'],//课程属性
             'examType' => ['td:eq(6)', 'text'],//考试类型
-            'teacher' => ['td:eq(7)', 'text'],//教师
+            'teacher' => ['td:eq(7)', 'text','','cbTeacher'],//教师
             'studyWay' => ['td:eq(9)', 'text'],//修读方式
             'chooseType' => ['td:eq(10)', 'text'],//选课状态
             'allWeek' => ['td:eq(11)', 'text','','cbWeek'],//周次
