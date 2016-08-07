@@ -3,7 +3,7 @@
 
 ## 安装
 ```php
-composer requier
+composer require mohuishou/scuplus-jwc-package
 ```
 
 ## 使用
