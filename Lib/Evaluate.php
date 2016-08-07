@@ -40,4 +40,15 @@ class Evaluate extends JwcBase{
         $data['page']=$data_page[0];
         return $data;
     }
+
+    /**
+     * 获取评教信息
+     * @author mohuishou<1@lailin.xyz>
+     * @param int $page 页码
+     * @return mixed
+     */
+    public function getEvaluate($page=1){
+        return $this->login()->spider($page);
+    }
+
 }
