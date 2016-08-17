@@ -199,7 +199,7 @@ Array
             [examType] => 考试
             [teacher] => 海维清
             [allWeek] => 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
-            [week] => 1
+            [day] => 1
             [session] => 1,2
             [campus] => 江安
             [building] => 艺术大楼

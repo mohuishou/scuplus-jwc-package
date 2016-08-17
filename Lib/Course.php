@@ -50,7 +50,7 @@ class Course extends JwcBase{
             'examType' => ['td:eq(5)', 'text'],//考试类型
             'teacher' => ['td:eq(6)', 'text','','cbTeacher'],//教师
             'allWeek' => ['td:eq(7)', 'text', '', "cbWeek"],//周次
-            'week' => ['td:eq(8)', 'text'],//星期
+            'day' => ['td:eq(8)', 'text'],//星期
             'session' => ['td:eq(9)', 'text', '',"cbWeek"],//节次
             'campus' => ['td:eq(10)', 'text'],//校区
             'building' => ['td:eq(11)', 'text'],//教学楼
