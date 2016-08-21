@@ -2,7 +2,7 @@
     "name": "mohuishou/scuplus-jwc-package",
     "description":"模拟登录四川大学教务处，获取四川大学教务处成绩，个人信息，课程表等",
     "keywords":["四川大学","教务处","四川大学教务处","scu","scuplus"],
-    "version":"0.1.0",
+    "version":"0.1.1",
     "license":"MIT",
     "authors": [
         {
