@@ -76,7 +76,7 @@ class Schedule extends JwcBase{
      * @return mixed
      */
     public function notFull(){
-        return $this->spider(false);
+        return $this->login()->spider(false);
     }
 
 }
