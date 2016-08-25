@@ -14,10 +14,11 @@ class Schedule extends JwcBase{
 
     /**
      * 获取本学期课表
+     * @param boolean $is_full
      * @author mohuishou<1@lailin.xyz>
      * @return mixed
      */
-    protected function spider()
+    protected function spider($is_full=true)
     {
         $url = 'http://202.115.47.141/xkAction.do?actionType=6';
         //课程表的采集规则
@@ -48,20 +49,34 @@ class Schedule extends JwcBase{
         foreach($data as $key => $value){
             if(!empty($value['courseId'])){
                 if($value['courseId']<10){
-                    $a=$data[$key-1];
-                    $a['allWeek']=cbWeek($value['plan']);
-                    $a['week']=$value['courseId'];
-                    $a['session']=cbWeek($value['name']);
-                    $a['building']=$value['credit'];
-                    $a['classroom']=$value['courseType'];
-                    $data[$key]=$a;
-                    $scheduleData[]=$a;
+                    if($is_full){
+                        $a=$data[$key-1];
+                        $a['allWeek']=cbWeek($value['plan']);
+                        $a['week']=$value['courseId'];
+                        $a['session']=cbWeek($value['name']);
+                        $a['building']=$value['credit'];
+                        $a['classroom']=$value['courseType'];
+                        $data[$key]=$a;
+                        $scheduleData[]=$a;
+                    }else{
+                        unset($data[$key]);
+                    }
                 }
             }else{
                 unset($data[$key]);
             }
         }
         return $data;
+    }
+
+
+    /**
+     * 返回不完整的课程表，一门课程有多个上课时间段时，只要第一个
+     * @author mohuishou<1@lailin.xyz>
+     * @return mixed
+     */
+    public function notFull(){
+        return $this->spider(false);
     }
 
 }
