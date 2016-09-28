@@ -75,7 +75,7 @@ abstract class JwcBase{
 
         $this->_curl->get('http://202.115.47.141/loginAction.do?zjh='.$this->_uid.'&mm='.$this->_password);
         if ( $this->_curl->error) {
-            throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage);
+            throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
         }
         //判断是否登录成功
         $page=$this->_curl->response;
@@ -85,7 +85,7 @@ abstract class JwcBase{
         ];
         $err=QueryList::Query($page,$rule)->data;
         if(!empty($err))
-            throw new \Exception('Error:'.$err[0]['err']);
+            throw new \Exception('Error:'.$err[0]['err'],4011);
 
         //登录成功之后设置cookie
         $this->_login_cookie=$this->_curl->getResponseCookie("JSESSIONID");
@@ -107,7 +107,7 @@ abstract class JwcBase{
 
         $this->_curl->get($url);
         if ( $this->_curl->error) {
-            throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage);
+            throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
         }
         $page=$this->_curl->response;
         //转码
