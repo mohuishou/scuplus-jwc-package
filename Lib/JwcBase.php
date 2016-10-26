@@ -73,7 +73,12 @@ abstract class JwcBase{
         $this->_curl->setHeader("X-Forwarded-For",$ip);
         $this->_curl->setHeader("Referer",'http://202.115.47.141/login.jsp');
 
-        $this->_curl->get('http://202.115.47.141/loginAction.do?zjh='.$this->_uid.'&mm='.$this->_password);
+        $param=[
+            "zjh"=>$this->_uid,
+            "mm"=>$this->_password
+        ];
+
+        $this->_curl->post('http://202.115.47.141/loginAction.do',$param);
         if ( $this->_curl->error) {
             throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
         }
