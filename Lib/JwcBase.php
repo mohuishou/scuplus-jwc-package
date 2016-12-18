@@ -67,21 +67,21 @@ abstract class JwcBase{
         if(!empty($this->_login_cookie))
             return $this;
 
-
         //设置header伪造来源以及ip
         $ip=rand(1,233).'.'.rand(1,233).'.'.rand(1,233).'.'.rand(1,233);
         $this->_curl->setHeader("X-Forwarded-For",$ip);
-        $this->_curl->setHeader("Referer",'http://202.115.47.141/login.jsp');
+        $this->_curl->setHeader("Referer",'http://202.115.47.141/loginAction.do');
 
+        //登录教务处
         $param=[
             "zjh"=>$this->_uid,
             "mm"=>$this->_password
         ];
-
         $this->_curl->post('http://202.115.47.141/loginAction.do',$param);
         if ( $this->_curl->error) {
             throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
         }
+
         //判断是否登录成功
         $page=$this->_curl->response;
         $page=iconv('GBK','UTF-8//IGNORE',$page);
@@ -89,6 +89,7 @@ abstract class JwcBase{
             'err'=>['.errorTop','text']
         ];
         $err=QueryList::Query($page,$rule)->data;
+        //登录失败，报错
         if(!empty($err))
             throw new \Exception('Error:'.$err[0]['err'],4011);
 
@@ -119,4 +120,6 @@ abstract class JwcBase{
         $page=iconv('GBK','UTF-8//IGNORE',$page);
         return $page;
     }
+
+
 }

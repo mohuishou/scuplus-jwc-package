@@ -69,3 +69,21 @@ params:
 ```
 http://202.115.47.141/ksApCxAction.do?oper=getKsapXx
 ```
+
+## 评教
+
+### 表单页面
+```
+wjbm:0000000051  //评教id
+bpr:20022167 //教师id
+pgnr:602013030 //课程id
+oper:wjShow
+wjmc:%D1%A7%C9%FA%C6%C0%BD%CC //评教类型
+bprm:%D1%CF%B1%F3%D3%EE //教师名字
+pgnrm:%BC%C6%CB%E3%BB%FA%CD%A8%D0%C5%D3%EB%CD%F8%C2%E7 //评教课程名字
+pageSize:20
+page:1
+currentPage:1
+pageNo:
+3D420CF:5F9B2704E286C34E4618AB477AC7DD57
+```
