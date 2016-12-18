@@ -31,7 +31,8 @@ class Evaluate extends JwcBase{
 
         ];
         $rules_verify=[
-            '3D420CF'=>['input[name="3D420CF"]','value']
+            'value'=>['input[type="hidden"]:last','value'],
+            'name'=>['input[type="hidden"]:last','name']
         ];
 
         $data['info']=QueryList::Query($html,$rules)->getData(function ($item){
@@ -45,11 +46,11 @@ class Evaluate extends JwcBase{
                     $data['evaluate_type']=$v;
                 }
             }
-            $item['param']=$data;
-            return $item;
+            $data['status']=$item['status'];
+            return $data;
         });
         $data_verify=QueryList::Query($html,$rules_verify)->data;
-        $data['3D420CF']=$data_verify[0]['3D420CF'];
+        $data['verify']=$data_verify[0];
         return $data;
     }
 
@@ -72,7 +73,7 @@ class Evaluate extends JwcBase{
      */
     public function evaluate($params){
         //参数检测
-        $param_verify=['jwc_evaluate_id','jwc_teacher_id','teacher_name','teacher_type','course_name','course_id','3D420CF','star','comment'];
+        $param_verify=['jwc_evaluate_id','jwc_teacher_id','teacher_name','teacher_type','course_name','course_id','verify','star','comment'];
         foreach ($param_verify as $v){
             if(!array_key_exists($v, $params)){
                 throw new \Exception('参数错误！'.$v.'必须','4221');
@@ -140,7 +141,7 @@ class Evaluate extends JwcBase{
         $post_params['bprm']=$this->utf82gbk($params['teacher_name']); //教师名
         $post_params['pgnrm']=$this->utf82gbk($params['course_name']); //课程名
 
-        $post_params['3D420CF']=$params['3D420CF']; //应该是验证参数
+        $post_params[$params['verify']['name']]=$params['verify']['value']; //应该是验证参数
 
         //抓取表单页面
         $url=$formUrl.'?'.http_build_query($post_params);
@@ -159,10 +160,11 @@ class Evaluate extends JwcBase{
         }
 
         $rules_verify=[
-            '3D420CF'=>['input[name="3D420CF"]','value']
+            'value'=>['input[type="hidden"]:last','value'],
+            'name'=>['input[type="hidden"]:last','name']
         ];
         $data_verify=QueryList::Query($html,$rules_verify)->data;
-        $params_data['3D420CF']=$data_verify[0]['3D420CF'];
+        $params_data[$data_verify[0]['verify']['name']]=$data_verify[0]['verify']['vuale'];
 
         $params_data['wjbm']=$params['jwc_evaluate_id']; //评教id
         $params_data['bpr']=$params['jwc_teacher_id']; //教师id
