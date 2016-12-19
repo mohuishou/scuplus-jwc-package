@@ -159,7 +159,7 @@ class Evaluate extends JwcBase{
             'name'=>['input[type="hidden"]:last','name']
         ];
         $data_verify=QueryList::Query($html,$rules_verify)->data;
-        $params_data[$data_verify[0]['verify']['name']]=$data_verify[0]['verify']['vuale'];
+        $params_data[$data_verify[0]['name']]=$data_verify[0]['value'];
 
         $params_data['wjbm']=$params['jwc_evaluate_id']; //评教id
         $params_data['bpr']=$params['jwc_teacher_id']; //教师id
