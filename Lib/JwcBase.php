@@ -53,7 +53,7 @@ abstract class JwcBase{
         $this->_uid=$uid;
         $this->_password=$password;
         $this->_curl=$curl;
-        $this->_curl->setOpt(CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_0);
+
     }
 
 
@@ -78,6 +78,7 @@ abstract class JwcBase{
             "zjh"=>$this->_uid,
             "mm"=>$this->_password
         ];
+        $this->_curl->setOpt(CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_0);
         $this->_curl->post('http://202.115.47.141/loginAction.do',$param);
         if ( $this->_curl->error) {
             throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
@@ -112,6 +113,7 @@ abstract class JwcBase{
         if(empty($this->_login_cookie))
             throw new \Exception('Error: 尚未登录');
 
+        $this->_curl->setOpt(CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_0);
         $this->_curl->get($url);
         if ( $this->_curl->error) {
             throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
