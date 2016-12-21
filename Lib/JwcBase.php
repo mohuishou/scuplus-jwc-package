@@ -53,6 +53,7 @@ abstract class JwcBase{
         $this->_uid=$uid;
         $this->_password=$password;
         $this->_curl=$curl;
+        $this->_curl->setOpt(CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_0);
     }
 
 
