@@ -3,6 +3,7 @@
     "description":"模拟登录四川大学教务处，获取四川大学教务处成绩，个人信息，课程表等",
     "keywords":["四川大学","教务处","四川大学教务处","scu","scuplus"],
     "license":"MIT",
+    "version":"0.4.0",
     "authors": [
         {
             "name": "mohuishou",
