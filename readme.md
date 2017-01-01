@@ -246,32 +246,74 @@ Array
 方法：index()
 Array
 (
-    [info] => Array //评教信息
+    [info] => Array
         (
             [0] => Array
                 (
-                    [param] => Array
-                        (
-                            [0] => 0000000047
-                            [1] => 20011014
-                            [2] => 袁一民
-                            [3] => 学生评教
-                            [4] => 新媒体概念及新媒体艺术实践
-                            [5] => 101708020
-                        )
-
-                    [status] => 1 //是否已评教：1：已评，0：未评
+                    [jwc_evaluate_id] => 0000000051
+                    [jwc_teacher_id] => 20022167
+                    [teacher_name] => 严斌宇
+                    [teacher_type] => 1 //教师类型：1：教师，0：助教
+                    [evaluate_type] => 学生评教
+                    [course_name] => 计算机通信与网络
+                    [course_id] => 602013030
+                    [status] => 1
                 )
-            ······
-     [page] => Array //页码总数
-        (
-            [page] => 1
+            ……
         )
-
+    [verify] => Array //验证信息，无关紧要
+            (
+                [value] => 1
+                [name] => currentPage
+            )
 ```
 
-#### 专有方法：根据页码获取信息
+#### 专有方法：获取已经评教的信息
 ```
-方法：getEvaluate($page=1)
-返回：同默认方法
+方法：getEvaluateData($params)
+参数：
+$params=[
+        'jwc_evaluate_id' => '0000000052',
+        'jwc_teacher_id' => 'zj2015222055202',
+        'teacher_name' => '钟飞',
+        'teacher_type' => '0',
+        'evaluate_type' => '研究生助教评价',
+        'course_name' => '自控原理（全英文）',
+        'course_id' => '602015030',
+        'verify_name'=>'DA8C8756',
+        'verify_value'=>'BF2173036C4163BA48DBB9EE1BB20529',
+        'status'=>1 //评教状态，必须为1，为1时表示已经评教
+    ];
+返回：
+Array
+(
+    [comment] => 钟飞助教很耐心的
+    [star] => 5 //平均分
+)
+```
+
+#### 专有方法：提交评教信息
+```
+方法：evaluate($params);
+参数：
+    $params=[
+        'jwc_evaluate_id' => '0000000052',
+        'jwc_teacher_id' => 'zj2015222055202',
+        'teacher_name' => '钟飞',
+        'teacher_type' => '0',
+        'evaluate_type' => '研究生助教评价',
+        'course_name' => '自控原理（全英文）',
+        'course_id' => '602015030',
+        'star'=>5,
+        'verify_name'=>'DA8C8756',
+        'verify_value'=>'BF2173036C4163BA48DBB9EE1BB20529',
+        'comment'=>'钟飞助教很耐心的',
+        'status'=>1
+    ];
+返回：
+Array
+(
+    [message] => 评估失败，请返回！ //重复评教也会失败，评教之前请先检查评教状态
+    [status] => 0 //1表示成功
+)
 ```

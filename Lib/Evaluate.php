@@ -72,12 +72,65 @@ class Evaluate extends JwcBase{
         //抓取表单页面
         $url=$formUrl.'?'.http_build_query($post_params);
         $html=$this->get($url);
-//        return $html;
+
+        //获取评教内容
         $rules=[
-           'comment'=>['textarea[name="zgpj"]','text']
+           'comment'=>['textarea[name="zgpj"]','text'],
         ];
         $res=QueryList::Query($html,$rules)->data;
-        return $res;
+        $data['comment']=$res[0]['comment'];
+
+        //获取分数
+        $rules_star=[
+            'star'=>['table table table table[align="left"] tr td','html','-br',function($content) use ($params){
+                if(empty($content)){
+                    return false;
+                }
+                $pattern="/value=\"10_(.*?)\"/";
+                preg_match_all($pattern,$content,$a);
+                /**
+                 * 期望的数据格式
+                Array
+                (
+                    [0] => Array
+                    (
+                        [0] => value="10_0.8"
+                        ....
+                    )
+
+                    [1] => Array
+                    (
+                        [0] => 10_0.8
+                        ...
+                    )
+                )
+                */
+                if(!isset($a[1])||empty($a[1])){
+                    return false;
+                }
+                $star_teacher=[0.2,0.6,0.7,0.8,1];//教师评分表
+                $star_teacher_zj=[0,0.3,0.6,0.8,1];//助教评分表
+                if($params['teacher_type']==1){
+                    $res=array_diff($star_teacher,$a[1]);
+                }else{
+                    $res=array_diff($star_teacher_zj,$a[1]);
+                }
+                $star=array_keys($res)[0];
+                return $star+1;
+            }]
+        ];
+        $res_star=QueryList::Query($html,$rules_star)->data;
+
+        //计算平均分
+        $count=0;
+        $sum=0;
+        foreach ($res_star as $v){
+            if(empty($v['star'])) continue;
+            $count++;
+            $sum=$sum+$v['star'];
+        }
+        $data['star']=$sum/$count;
+        return $data;
     }
 
     /**
@@ -135,7 +188,6 @@ class Evaluate extends JwcBase{
     protected function evaluateParams($params){
         $params_data=[];
 
-
         $post_params=$this->evaluateFormParams($params);
         $formUrl="http://202.115.47.141/jxpgXsAction.do";//评教表单页面
         //抓取表单页面
@@ -169,6 +221,12 @@ class Evaluate extends JwcBase{
         return $params_data;
     }
 
+    /**
+     * 评教信息填写页面参数获取
+     * @author mohuishou<1@lailin.xyz>
+     * @param $params
+     * @return mixed
+     */
     protected function evaluateFormParams($params){
         //问卷列表页面
         $url="http://202.115.47.141/jxpgXsAction.do?oper=listWj&pageSize=60";
@@ -197,6 +255,12 @@ class Evaluate extends JwcBase{
 
     }
 
+    /**
+     * 编码转换，用于评教信息提交
+     * @author mohuishou<1@lailin.xyz>
+     * @param $str
+     * @return string
+     */
     protected function utf82gbk($str){
         $str=iconv('UTF-8','GBK//IGNORE',$str);
         return $str;
