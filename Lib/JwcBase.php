@@ -138,7 +138,7 @@ abstract class JwcBase{
     public function logout(){
         //判断是否已经登录
         if(empty($this->_login_cookie))
-            throw new \Exception('Error: 尚未登录');
+            return;
         $url="http://202.115.47.141/logout.do?loginType=platformLogin";
         $this->get($url);
     }
