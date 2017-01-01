@@ -269,7 +269,7 @@ Array
 ```
 
 #### 专有方法：获取已经评教的信息
-```
+```php
 方法：getEvaluateData($params)
 参数：
 $params=[
@@ -293,7 +293,7 @@ Array
 ```
 
 #### 专有方法：提交评教信息
-```
+```php
 方法：evaluate($params);
 参数：
     $params=[

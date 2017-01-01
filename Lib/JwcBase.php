@@ -92,8 +92,14 @@ abstract class JwcBase{
         ];
         $err=QueryList::Query($page,$rule)->data;
         //登录失败，报错
-        if(!empty($err))
-            throw new \Exception('Error:'.$err[0]['err'],4011);
+        if(!empty($err)){
+            if(isset($err[0]['err'])&&!empty($err[0]['err'])){
+                $msg=$err[0]['err'];
+            }else{
+                $msg="未知错误";
+            }
+            throw new \Exception('Error:'.$msg,4011);
+        }
 
         //登录成功之后设置cookie
         $this->_login_cookie=$this->_curl->getResponseCookie("JSESSIONID");
@@ -122,6 +128,24 @@ abstract class JwcBase{
         //转码
         $page=iconv('GBK','UTF-8//IGNORE',$page);
         return $page;
+    }
+
+    /**
+     * 退出登录
+     * @author mohuishou<1@lailin.xyz>
+     * @throws \Exception
+     */
+    public function logout(){
+        //判断是否已经登录
+        if(empty($this->_login_cookie))
+            throw new \Exception('Error: 尚未登录');
+        $url="http://202.115.47.141/logout.do?loginType=platformLogin";
+        $this->get($url);
+    }
+
+    public function __destruct()
+    {
+        $this->logout();
     }
 
 
