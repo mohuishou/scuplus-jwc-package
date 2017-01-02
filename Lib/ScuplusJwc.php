@@ -8,14 +8,14 @@
  */
 
 namespace Mohuishou\Lib;
-use Curl\Curl;
 
 class ScuplusJwc{
     public static function create($class,$uid,$password){
         try{
-            $curl=new Curl();
+            $curl=new CurlBase($uid,$password);
             $class='Mohuishou\Lib\\'.$class;
-            return new $class($curl,$uid,$password);
+            $obj= new $class($curl,$uid,$password);
+            return $obj;
         }catch (\Exception $e){
             return $e->getMessage();
         }

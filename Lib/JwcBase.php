@@ -48,7 +48,7 @@ abstract class JwcBase{
      * @param $password string 密码
      * @param Curl $curl php-class-curl类
      */
-    public function __construct(Curl $curl,$uid,$password)
+    public function __construct(CurlBase $curl,$uid,$password)
     {
         $this->_uid=$uid;
         $this->_password=$password;
@@ -62,72 +62,18 @@ abstract class JwcBase{
      * @return $this
      * @throws \Exception
      */
-    protected function login()
-    {
-        //判断是否已经登录
-        if(!empty($this->_login_cookie))
-            return $this;
-
-        //设置header伪造来源以及ip
-        $ip=rand(1,233).'.'.rand(1,233).'.'.rand(1,233).'.'.rand(1,233);
-        $this->_curl->setHeader("X-Forwarded-For",$ip);
-        $this->_curl->setHeader("Referer",'http://202.115.47.141/loginAction.do');
-
-        //登录教务处
-        $param=[
-            "zjh"=>$this->_uid,
-            "mm"=>$this->_password
-        ];
-        $this->_curl->setOpt(CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_0);
-        $this->_curl->post('http://202.115.47.141/loginAction.do',$param);
-        if ( $this->_curl->error) {
-            throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
-        }
-
-        //判断是否登录成功
-        $page=$this->_curl->response;
-        $page=iconv('GBK','UTF-8//IGNORE',$page);
-        $rule=[
-            'err'=>['.errorTop','text']
-        ];
-        $err=QueryList::Query($page,$rule)->data;
-        //登录失败，报错
-        if(!empty($err)){
-            if(isset($err[0]['err'])&&!empty($err[0]['err'])){
-                $msg=$err[0]['err'];
-            }else{
-                $msg="未知错误";
-            }
-            throw new \Exception('Error:'.$msg,4011);
-        }
-
-        //登录成功之后设置cookie
-        $this->_login_cookie=$this->_curl->getResponseCookie("JSESSIONID");
-        $this->_curl->setCookie('JSESSIONID',$this->_login_cookie);
+    protected function login(){
+        $this->_curl->login_jwc();
         return $this;
     }
 
     /**
-     * 通过get方法获得页面
      * @author mohuishou<1@lailin.xyz>
      * @param $url
-     * @return string html页面
-     * @throws \Exception
+     * @return string
      */
     protected function get($url){
-        //判断是否已经登录
-        if(empty($this->_login_cookie))
-            throw new \Exception('Error: 尚未登录');
-
-        $this->_curl->setOpt(CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_0);
-        $this->_curl->get($url);
-        if ( $this->_curl->error) {
-            throw new \Exception('Error: ' .  $this->_curl->errorCode . ': ' .  $this->_curl->errorMessage,5001);
-        }
-        $page=$this->_curl->response;
-        //转码
-        $page=iconv('GBK','UTF-8//IGNORE',$page);
-        return $page;
+        return $this->_curl->get_jwc($url);
     }
 
     /**
@@ -136,17 +82,9 @@ abstract class JwcBase{
      * @throws \Exception
      */
     public function logout(){
-        //判断是否已经登录
-        if(empty($this->_login_cookie))
-            return;
-        $url="http://202.115.47.141/logout.do?loginType=platformLogin";
-        $this->get($url);
+        $this->_curl->logout();
     }
 
-    public function __destruct()
-    {
-        $this->logout();
-    }
 
 
 }
